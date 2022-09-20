@@ -58,6 +58,14 @@ kubectl apply --filename kubernetes/django-app-deployment.yml
 
 ## Настройка Ingress
 
+В `/etc/host` добавляем строчку:
+
+```txt
+123.456.78.9 star-burger.test
+```
+
+Где `123.456.78.9` - ip-адрес кластера.
+
 Для `minikube` нужно установить аддон:
 
 ```bash
