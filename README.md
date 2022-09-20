@@ -55,3 +55,17 @@ kubectl create configmap django-app-config --from-env-file=django-app-config.pro
 ```bash
 kubectl apply --filename kubernetes/django-app-deployment.yml
 ```
+
+## Настройка Ingress
+
+Для `minikube` нужно установить аддон:
+
+```bash
+minikube addons enable ingress
+```
+
+Запускаем манифест:
+
+```bash
+kubectl apply -f kubernetes/ingress.yml
+```
