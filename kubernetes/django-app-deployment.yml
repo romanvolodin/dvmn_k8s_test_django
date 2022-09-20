@@ -29,10 +29,8 @@ kind: Service
 metadata:
   name: django-app-service
 spec:
-  type: NodePort
   selector:
     project: dvmn
   ports:
   - name: service-port-name
     port: 80
-    nodePort: 30300
