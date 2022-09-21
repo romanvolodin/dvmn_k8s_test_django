@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: django-migrate
+spec:
+  backoffLimit: 2
+  activeDeadlineSeconds: 30
+  template:
+    spec:
+      containers:
+      - name: django-clearsessions-container
+        image: django_app
+        imagePullPolicy: Never
+        envFrom:
+          - configMapRef:
+              name: django-app-config
+        args:
+          - ./manage.py
+          - migrate
+          - --no-input
+      restartPolicy: Never
