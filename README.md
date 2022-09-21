@@ -91,3 +91,25 @@ minikube addons enable ingress
 ```bash
 kubectl apply -f kubernetes/ingress.yml
 ```
+
+## Настройка удаления сессий
+
+Время и промежуток, через который будут удаляться пользовательские сессии Джанго, можно задать в файле `django-clear-sessions-cronjob.yml`. Строчка
+
+```yaml
+schedule: "0 0 1 * *"
+```
+
+означает, что команда будет выполняться в 00:00 первого числа каждого месяца. Можно настроить по желанию. Удобно воспользоваться сайтом [crontab.guru](https://crontab.guru/), чтобы наглядно настраивать время и промежуток выполнения.
+
+После настройки времени надо запустить команду в работу:
+
+```bash
+kubectl apply --filename kubernetes/django-clear-sessions-cronjob.yml
+```
+
+Для проверки можно запустить `CronJob` (т.е. создать `Job`) руками в дашборде (в меню кронджоба выбираем `Trigger`) или командой:
+
+```bash
+kubectl create job --from=cronjob/django-clearsessions-cronjob test-clearsession-job
+```
