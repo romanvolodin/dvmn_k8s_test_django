@@ -35,25 +35,39 @@ $ docker-compose run web ./manage.py createsuperuser
 
 ## Файл конфигурации для Kubernetes
 
-Создайте файл кофигурации `django-app-config.properties`. Пример настроек:
+Заполните переменные окружения разделе `data` файла кофигурации `kubernetes/django-app-config.yml`:
 
-```bash
-SECRET_KEY=secret
-DATABASE_URL=postgres://user:password@123.456.78.9:5432/dbname
-ALLOWED_HOSTS=123.456.78.9:5432
-DEBUG=true
+```yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-app-config
+data:
+  ALLOWED_HOSTS: 127.0.0.1, localhost, 123.456.78.9
+  DATABASE_URL: postgres://username:password@host:5432/dbname
+  DEBUG: 'false'
+  SECRET_KEY: secret
 ```
 
 Создайте `ConfigMap` из этого файла:
 
 ```bash
-kubectl create configmap django-app-config --from-env-file=django-app-config.properties
+kubectl apply --filename kubernetes/django-app-config.yml
 ```
 
 Запустите дейплой:
 
 ```bash
 kubectl apply --filename kubernetes/django-app-deployment.yml
+```
+
+### Изменение конфига
+
+После изменения yml-конфига надо накатить изменения и перезапустить деплоймент:
+
+```bash
+kubectl apply --filename kubernetes/django-app-config.yml
+kubectl rollout restart deployment
 ```
 
 ## Настройка Ingress
